@@ -2,8 +2,6 @@ import java.util.Random;
 
 public class Maze {
     public static final int END_LOOP = 1200;
-    public static final int CLOSE_RIGHT_OPEN_BOTTOM = 1;
-
     private final int horizontal;
     private final int vertical;
 
@@ -65,16 +63,16 @@ public class Maze {
             else
                 print(":--");
         }
-        // 180
+
         print(":");
         println();
 
-        // 190
+
         int c = 1;
         matrixChemin[rowChemin][1] = c;
         c++;
 
-        // 200
+
         int row = rowChemin;
         int line = 1;
         GOTO(270);
@@ -120,7 +118,7 @@ public class Maze {
                         GOTO(280);
                     continue;
                 case 280:
-                    if (isChemin(row-1, line))
+                    if (isChemin(row - 1, line))
                         GOTO(600);
                     else
                         GOTO(290);
@@ -132,7 +130,7 @@ public class Maze {
                         GOTO(300);
                     continue;
                 case 300:
-                    if (isChemin(row, line-1))
+                    if (isChemin(row, line - 1))
                         GOTO(430);
                     else
                         GOTO(310);
@@ -144,7 +142,7 @@ public class Maze {
                         GOTO(320);
                     continue;
                 case 320:
-                    if (isChemin(row+1, line))
+                    if (isChemin(row + 1, line))
                         GOTO(350);
                     else
                         GOTO(330);
@@ -156,9 +154,9 @@ public class Maze {
                 case 340:
                     if (rowChemin == 1)
                         GOTO(940);
-                    else if (rowChemin == 2)
+                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
                         GOTO(980);
-                    else if (rowChemin == 3)
+                    else if (rowChemin == CellType.OPEN.getValue())
                         GOTO(1020);
                     else
                         GOTO(350);
@@ -180,7 +178,7 @@ public class Maze {
                     GOTO(390);
                     continue;
                 case 380:
-                    if (isChemin(row, line+1))
+                    if (isChemin(row, line + 1))
                         GOTO(410);
                     else
                         GOTO(390);
@@ -192,9 +190,9 @@ public class Maze {
                 case 400:
                     if (rowChemin == 1)
                         GOTO(940);
-                    else if (rowChemin == 2)
+                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
                         GOTO(980);
-                    else if (rowChemin == 3)
+                    else if (rowChemin == CellType.OPEN.getValue())
                         GOTO(1090);
                     else
                         GOTO(410);
@@ -206,7 +204,7 @@ public class Maze {
                 case 420:
                     if (rowChemin == 1)
                         GOTO(940);
-                    else if (rowChemin == 2)
+                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
                         GOTO(980);
                     else
                         GOTO(430);
@@ -218,7 +216,7 @@ public class Maze {
                         GOTO(440);
                     continue;
                 case 440:
-                    if (isChemin(row+1, line))
+                    if (isChemin(row + 1, line))
                         GOTO(530);
                     else
                         GOTO(450);
@@ -240,7 +238,7 @@ public class Maze {
                     GOTO(490);
                     continue;
                 case 480:
-                    if (isChemin(row, line+1))
+                    if (isChemin(row, line + 1))
                         GOTO(510);
                     else
                         GOTO(490);
@@ -252,9 +250,9 @@ public class Maze {
                 case 500:
                     if (rowChemin == 1)
                         GOTO(940);
-                    else if (rowChemin == 2)
+                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
                         GOTO(1020);
-                    else if (rowChemin == 3)
+                    else if (rowChemin == CellType.OPEN.getValue())
                         GOTO(1090);
                     else
                         GOTO(510);
@@ -266,7 +264,7 @@ public class Maze {
                 case 520:
                     if (rowChemin == 1)
                         GOTO(940);
-                    else if (rowChemin == 2)
+                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
                         GOTO(1020);
                     else
                         GOTO(530);
@@ -288,7 +286,7 @@ public class Maze {
                     GOTO(570);
                     continue;
                 case 560:
-                    if (isChemin(row, line+1))
+                    if (isChemin(row, line + 1))
                         GOTO(590);
                     else
                         GOTO(570);
@@ -300,7 +298,7 @@ public class Maze {
                 case 580:
                     if (rowChemin == 1)
                         GOTO(940);
-                    else if (rowChemin == 2)
+                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
                         GOTO(1090);
                     else
                         GOTO(590);
@@ -315,7 +313,7 @@ public class Maze {
                         GOTO(610);
                     continue;
                 case 610:
-                    if (isChemin(row, line-1))
+                    if (isChemin(row, line - 1))
                         GOTO(790);
                     else
                         GOTO(620);
@@ -327,7 +325,7 @@ public class Maze {
                         GOTO(630);
                     continue;
                 case 630:
-                    if (isChemin(row+1, line))
+                    if (isChemin(row + 1, line))
                         GOTO(720);
                     else
                         GOTO(640);
@@ -349,7 +347,7 @@ public class Maze {
                     GOTO(680);
                     continue;
                 case 670:
-                    if (isChemin(row, line+1))
+                    if (isChemin(row, line + 1))
                         GOTO(700);
                     else
                         GOTO(680);
@@ -361,9 +359,9 @@ public class Maze {
                 case 690:
                     if (rowChemin == 1)
                         GOTO(980);
-                    else if (rowChemin == 2)
+                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
                         GOTO(1020);
-                    else if (rowChemin == 3)
+                    else if (rowChemin == CellType.OPEN.getValue())
                         GOTO(1090);
                     else
                         GOTO(700);
@@ -375,7 +373,7 @@ public class Maze {
                 case 710:
                     if (rowChemin == 1)
                         GOTO(980);
-                    else if (rowChemin == 2)
+                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
                         GOTO(1020);
                     else
                         GOTO(720);
@@ -397,7 +395,7 @@ public class Maze {
                     GOTO(760);
                     continue;
                 case 750:
-                    if (isChemin(row, line+1))
+                    if (isChemin(row, line + 1))
                         GOTO(780);
                     else
                         GOTO(760);
@@ -409,7 +407,7 @@ public class Maze {
                 case 770:
                     if (rowChemin == 1)
                         GOTO(980);
-                    else if (rowChemin == 2)
+                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
                         GOTO(1090);
                     else
                         GOTO(780);
@@ -424,7 +422,7 @@ public class Maze {
                         GOTO(800);
                     continue;
                 case 800:
-                    if (isChemin(row +1, line))
+                    if (isChemin(row + 1, line))
                         GOTO(880);
                     else
                         GOTO(810);
@@ -446,7 +444,7 @@ public class Maze {
                     GOTO(990);
                     continue;
                 case 840:
-                    if (isChemin(row, line+1))
+                    if (isChemin(row, line + 1))
                         GOTO(870);
                     else
                         GOTO(850);
@@ -458,7 +456,7 @@ public class Maze {
                 case 860:
                     if (rowChemin == 1)
                         GOTO(1020);
-                    else if (rowChemin == 2)
+                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
                         GOTO(1090);
                     else
                         GOTO(870);
@@ -483,7 +481,7 @@ public class Maze {
                     GOTO(920);
                     continue;
                 case 910:
-                    if (isChemin(row, line+1))
+                    if (isChemin(row, line + 1))
                         GOTO(930);
                     else
                         GOTO(920);
@@ -500,7 +498,7 @@ public class Maze {
                     continue;
                 case 950:
                     c++;
-                    matrix[row - 1][line] = 2;
+                    matrix[row - 1][line] = CellType.CLOSE_BOTTOM.getValue();
                     row--;
                     GOTO(960);
                     continue;
@@ -537,17 +535,17 @@ public class Maze {
                     continue;
                 case 1030:
                     c++;
-                    if (matrix[row][line] == 0)
+                    if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM.getValue())
                         GOTO(1050);
                     else
                         GOTO(1040);
                     continue;
                 case 1040:
-                    matrix[row][line] = 3;
+                    matrix[row][line] = CellType.OPEN.getValue();
                     GOTO(1060);
                     continue;
                 case 1050:
-                    matrix[row][line] = 2;
+                    matrix[row][line] = CellType.CLOSE_BOTTOM.getValue();
                     GOTO(1060);
                     continue;
                 case 1060:
@@ -572,13 +570,13 @@ public class Maze {
                 case 1100:
                     matrixChemin[row][line + 1] = c;
                     c++;
-                    if (matrix[row][line] == 0)
+                    if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM.getValue())
                         GOTO(1120);
                     else
                         GOTO(1110);
                     continue;
                 case 1110:
-                    matrix[row][line] = 3;
+                    matrix[row][line] = CellType.OPEN.getValue();
                     GOTO(1130);
                     continue;
                 case 1120:
@@ -600,13 +598,13 @@ public class Maze {
                     GOTO(1160);
                     continue;
                 case 1160:
-                    if (matrix[row][line] == 0)
+                    if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM.getValue())
                         GOTO(1180);
                     else
                         GOTO(1170);
                     continue;
                 case 1170:
-                    matrix[row][line] = 3;
+                    matrix[row][line] = CellType.OPEN.getValue();
                     q = 0;
                     GOTO(1190);
                     continue;
@@ -630,28 +628,10 @@ public class Maze {
         for (int j = 1; j <= vertical; j++) {
             print("I");        // 1210
 
-            /*
-            0 :
-              I
-            :--
-
-            1 :
-              I
-            :
-
-            2 :
-
-            :--
-
-            3 :
-
-
-             */
-
             for (int i = 1; i <= horizontal; i++) {
-                if (matrix[i][j] == 0 || matrix[i][j] == CLOSE_RIGHT_OPEN_BOTTOM) {
+                if (matrix[i][j] == CellType.CLOSE_RIGHT_BOTTOM.getValue() || matrix[i][j] == CellType.CLOSE_RIGHT.getValue()) {
                     print("  I");
-                } else if (matrix[i][j] == 2 || matrix[i][j] == 3) {
+                } else if (matrix[i][j] == CellType.CLOSE_BOTTOM.getValue() || matrix[i][j] == CellType.OPEN.getValue()) {
                     print("   ");
                 }
             }
@@ -660,11 +640,11 @@ public class Maze {
             println();
 
             for (int i = 1; i <= horizontal; i++) {
-                if (matrix[i][j] == 0)
+                if (matrix[i][j] == CellType.CLOSE_RIGHT_BOTTOM.getValue())
                     print(":--");
-                else if (matrix[i][j] == 2)
+                else if (matrix[i][j] == CellType.CLOSE_BOTTOM.getValue())
                     print(":--");
-                else if (matrix[i][j] == 1 || matrix[i][j] == 3)
+                else if (matrix[i][j] == CellType.CLOSE_RIGHT.getValue() || matrix[i][j] == CellType.OPEN.getValue())
                     print(":  ");
             }
 
@@ -673,16 +653,17 @@ public class Maze {
         }
     }
 
+
     private boolean isNotChemin(int row, int line) {
-        return ! isChemin(row, line);
+        return !isChemin(row, line);
     }
 
     private boolean isChemin(int row, int line) {
         return matrixChemin[row][line] != 0;
     }
 
-    private void closeRightOpenBottom(int r, int s) {
-        matrix[r][s] = CLOSE_RIGHT_OPEN_BOTTOM;
+    private void closeRightOpenBottom(int row, int line) {
+        matrix[row][line] = CellType.CLOSE_RIGHT.getValue();
     }
 
     private boolean mazeIsFinished(int horizontal, int vertical, int c) {
