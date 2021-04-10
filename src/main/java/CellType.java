@@ -19,11 +19,7 @@ public enum CellType {
     OPEN(3);
 
 
-    private int value;
-
-    public int getValue() {
-        return value;
-    }
+    private final int value;
 
     CellType(int value) {
         this.value = value;

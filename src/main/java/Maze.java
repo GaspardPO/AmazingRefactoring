@@ -2,11 +2,16 @@ import java.util.Random;
 
 public class Maze {
     public static final int END_LOOP = 1200;
+
+    private static final int DEUX = 2; // ????
+    public static final int TROIS = 3; //
+    public static final int UN = 1;
+
     private final int horizontal;
     private final int vertical;
 
     int[][] matrixChemin;
-    int[][] matrix;
+    CellType[][] matrix;
     int target = 0;      // where GOTO goes
     int q = 0;
     int z = 0;
@@ -34,9 +39,12 @@ public class Maze {
             matrixChemin[i] = new int[vertical + 1];
         }
 
-        this.matrix = new int[horizontal + 1][vertical + 1];
+        this.matrix = new CellType[horizontal + 1][vertical + 1];
         for (int i = 0; i <= horizontal; i++) {
-            matrix[i] = new int[vertical + 1];
+            matrix[i] = new CellType[vertical + 1];
+            for (int j = 0; j <= vertical; j++) {
+                matrix[i][j] = CellType.CLOSE_RIGHT_BOTTOM;
+            }
         }
     }
 
@@ -152,11 +160,11 @@ public class Maze {
                     GOTO(340);
                     continue;
                 case 340:
-                    if (rowChemin == 1)
+                    if (rowChemin == UN)
                         GOTO(940);
-                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
+                    else if (rowChemin == DEUX )
                         GOTO(980);
-                    else if (rowChemin == CellType.OPEN.getValue())
+                    else if (rowChemin == TROIS)
                         GOTO(1020);
                     else
                         GOTO(350);
@@ -188,11 +196,11 @@ public class Maze {
                     GOTO(400);
                     continue;
                 case 400:
-                    if (rowChemin == 1)
+                    if (rowChemin == UN)
                         GOTO(940);
-                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
+                    else if (rowChemin == DEUX)
                         GOTO(980);
-                    else if (rowChemin == CellType.OPEN.getValue())
+                    else if (rowChemin == TROIS)
                         GOTO(1090);
                     else
                         GOTO(410);
@@ -202,9 +210,9 @@ public class Maze {
                     GOTO(420);
                     continue;
                 case 420:
-                    if (rowChemin == 1)
+                    if (rowChemin == UN)
                         GOTO(940);
-                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
+                    else if (rowChemin == DEUX)
                         GOTO(980);
                     else
                         GOTO(430);
@@ -248,11 +256,11 @@ public class Maze {
                     GOTO(500);
                     continue;
                 case 500:
-                    if (rowChemin == 1)
+                    if (rowChemin == UN)
                         GOTO(940);
-                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
+                    else if (rowChemin == DEUX)
                         GOTO(1020);
-                    else if (rowChemin == CellType.OPEN.getValue())
+                    else if (rowChemin == TROIS)
                         GOTO(1090);
                     else
                         GOTO(510);
@@ -262,9 +270,9 @@ public class Maze {
                     GOTO(520);
                     continue;
                 case 520:
-                    if (rowChemin == 1)
+                    if (rowChemin == UN)
                         GOTO(940);
-                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
+                    else if (rowChemin == DEUX)
                         GOTO(1020);
                     else
                         GOTO(530);
@@ -296,9 +304,9 @@ public class Maze {
                     GOTO(580);
                     continue;
                 case 580:
-                    if (rowChemin == 1)
+                    if (rowChemin == UN)
                         GOTO(940);
-                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
+                    else if (rowChemin == DEUX)
                         GOTO(1090);
                     else
                         GOTO(590);
@@ -357,11 +365,11 @@ public class Maze {
                     GOTO(690);
                     continue;
                 case 690:
-                    if (rowChemin == 1)
+                    if (rowChemin == UN)
                         GOTO(980);
-                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
+                    else if (rowChemin == DEUX)
                         GOTO(1020);
-                    else if (rowChemin == CellType.OPEN.getValue())
+                    else if (rowChemin == TROIS)
                         GOTO(1090);
                     else
                         GOTO(700);
@@ -371,9 +379,9 @@ public class Maze {
                     GOTO(710);
                     continue;
                 case 710:
-                    if (rowChemin == 1)
+                    if (rowChemin == UN)
                         GOTO(980);
-                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
+                    else if (rowChemin == DEUX)
                         GOTO(1020);
                     else
                         GOTO(720);
@@ -405,9 +413,9 @@ public class Maze {
                     GOTO(770);
                     continue;
                 case 770:
-                    if (rowChemin == 1)
+                    if (rowChemin == UN)
                         GOTO(980);
-                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
+                    else if (rowChemin == DEUX)
                         GOTO(1090);
                     else
                         GOTO(780);
@@ -454,9 +462,9 @@ public class Maze {
                     GOTO(860);
                     continue;
                 case 860:
-                    if (rowChemin == 1)
+                    if (rowChemin == UN)
                         GOTO(1020);
-                    else if (rowChemin == CellType.CLOSE_BOTTOM.getValue())
+                    else if (rowChemin == DEUX)
                         GOTO(1090);
                     else
                         GOTO(870);
@@ -498,7 +506,7 @@ public class Maze {
                     continue;
                 case 950:
                     c++;
-                    matrix[row - 1][line] = CellType.CLOSE_BOTTOM.getValue();
+                    matrix[row - 1][line] = CellType.CLOSE_BOTTOM;
                     row--;
                     GOTO(960);
                     continue;
@@ -535,17 +543,17 @@ public class Maze {
                     continue;
                 case 1030:
                     c++;
-                    if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM.getValue())
+                    if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM )
                         GOTO(1050);
                     else
                         GOTO(1040);
                     continue;
                 case 1040:
-                    matrix[row][line] = CellType.OPEN.getValue();
+                    matrix[row][line] = CellType.OPEN ;
                     GOTO(1060);
                     continue;
                 case 1050:
-                    matrix[row][line] = CellType.CLOSE_BOTTOM.getValue();
+                    matrix[row][line] = CellType.CLOSE_BOTTOM ;
                     GOTO(1060);
                     continue;
                 case 1060:
@@ -570,13 +578,13 @@ public class Maze {
                 case 1100:
                     matrixChemin[row][line + 1] = c;
                     c++;
-                    if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM.getValue())
+                    if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM )
                         GOTO(1120);
                     else
                         GOTO(1110);
                     continue;
                 case 1110:
-                    matrix[row][line] = CellType.OPEN.getValue();
+                    matrix[row][line] = CellType.OPEN ;
                     GOTO(1130);
                     continue;
                 case 1120:
@@ -598,13 +606,13 @@ public class Maze {
                     GOTO(1160);
                     continue;
                 case 1160:
-                    if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM.getValue())
+                    if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM )
                         GOTO(1180);
                     else
                         GOTO(1170);
                     continue;
                 case 1170:
-                    matrix[row][line] = CellType.OPEN.getValue();
+                    matrix[row][line] = CellType.OPEN ;
                     q = 0;
                     GOTO(1190);
                     continue;
@@ -629,9 +637,9 @@ public class Maze {
             print("I");        // 1210
 
             for (int i = 1; i <= horizontal; i++) {
-                if (matrix[i][j] == CellType.CLOSE_RIGHT_BOTTOM.getValue() || matrix[i][j] == CellType.CLOSE_RIGHT.getValue()) {
+                if (matrix[i][j] == CellType.CLOSE_RIGHT_BOTTOM  || matrix[i][j] == CellType.CLOSE_RIGHT ) {
                     print("  I");
-                } else if (matrix[i][j] == CellType.CLOSE_BOTTOM.getValue() || matrix[i][j] == CellType.OPEN.getValue()) {
+                } else if (matrix[i][j] == CellType.CLOSE_BOTTOM  || matrix[i][j] == CellType.OPEN ) {
                     print("   ");
                 }
             }
@@ -640,11 +648,11 @@ public class Maze {
             println();
 
             for (int i = 1; i <= horizontal; i++) {
-                if (matrix[i][j] == CellType.CLOSE_RIGHT_BOTTOM.getValue())
+                if (matrix[i][j] == CellType.CLOSE_RIGHT_BOTTOM )
                     print(":--");
-                else if (matrix[i][j] == CellType.CLOSE_BOTTOM.getValue())
+                else if (matrix[i][j] == CellType.CLOSE_BOTTOM )
                     print(":--");
-                else if (matrix[i][j] == CellType.CLOSE_RIGHT.getValue() || matrix[i][j] == CellType.OPEN.getValue())
+                else if (matrix[i][j] == CellType.CLOSE_RIGHT  || matrix[i][j] == CellType.OPEN )
                     print(":  ");
             }
 
@@ -663,7 +671,7 @@ public class Maze {
     }
 
     private void closeRightOpenBottom(int row, int line) {
-        matrix[row][line] = CellType.CLOSE_RIGHT.getValue();
+        matrix[row][line] = CellType.CLOSE_RIGHT ;
     }
 
     private boolean mazeIsFinished(int horizontal, int vertical, int c) {
