@@ -6,6 +6,7 @@
  * as a refactoring challenge.
  * + This transliteration to Java was created by Bill Wake, William.Wake@acm.org
  */
+
 import java.util.Random;
 
 public class Amazing {
@@ -15,7 +16,7 @@ public class Amazing {
     static StringBuffer result = new StringBuffer();
 
     public static void main(String[] args) {
-        doit(Integer.parseInt(args[0]),Integer.parseInt(args[1]));
+        doit(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
         System.out.println(result);
     }
 
@@ -51,9 +52,9 @@ public class Amazing {
             wArray[i] = new int[vertical + 1];
         }
 
-        int[][] vArray = new int[horizontal + 1][vertical + 1];
+        int[][] matrix = new int[horizontal + 1][vertical + 1];
         for (int i = 0; i <= horizontal; i++) {
-            vArray[i] = new int[vertical + 1];
+            matrix[i] = new int[vertical + 1];
         }
 
         int q = 0;
@@ -502,7 +503,7 @@ public class Amazing {
                     continue;
                 case 950:
                     c++;
-                    vArray[r - 1][s] = 2;
+                    matrix[r - 1][s] = 2;
                     r--;
                     GOTO(960);
                     continue;
@@ -513,6 +514,7 @@ public class Amazing {
                         GOTO(970);
                     continue;
                 case 970:
+                case 1010:
                     q = 0;
                     GOTO(270);
                     continue;
@@ -525,16 +527,12 @@ public class Amazing {
                     GOTO(1000);
                     continue;
                 case 1000:
-                    vArray[r][s - 1] = 1;
+                    matrix[r][s - 1] = 1;
                     s--;
                     if (mazeIsFinished(horizontal, vertical, c))
                         GOTO(END_LOOP);
                     else
                         GOTO(1010);
-                    continue;
-                case 1010:
-                    q = 0;
-                    GOTO(270);
                     continue;
                 case 1020:
                     wArray[r + 1][s] = c;
@@ -542,17 +540,17 @@ public class Amazing {
                     continue;
                 case 1030:
                     c++;
-                    if (vArray[r][s] == 0)
+                    if (matrix[r][s] == 0)
                         GOTO(1050);
                     else
                         GOTO(1040);
                     continue;
                 case 1040:
-                    vArray[r][s] = 3;
+                    matrix[r][s] = 3;
                     GOTO(1060);
                     continue;
                 case 1050:
-                    vArray[r][s] = 2;
+                    matrix[r][s] = 2;
                     GOTO(1060);
                     continue;
                 case 1060:
@@ -577,17 +575,17 @@ public class Amazing {
                 case 1100:
                     wArray[r][s + 1] = c;
                     c++;
-                    if (vArray[r][s] == 0)
+                    if (matrix[r][s] == 0)
                         GOTO(1120);
                     else
                         GOTO(1110);
                     continue;
                 case 1110:
-                    vArray[r][s] = 3;
+                    matrix[r][s] = 3;
                     GOTO(1130);
                     continue;
                 case 1120:
-                    vArray[r][s] = 1;
+                    matrix[r][s] = 1;
                     GOTO(1130);
                     continue;
                 case 1130:
@@ -605,18 +603,18 @@ public class Amazing {
                     GOTO(1160);
                     continue;
                 case 1160:
-                    if (vArray[r][s] == 0)
+                    if (matrix[r][s] == 0)
                         GOTO(1180);
                     else
                         GOTO(1170);
                     continue;
                 case 1170:
-                    vArray[r][s] = 3;
+                    matrix[r][s] = 3;
                     q = 0;
                     GOTO(1190);
                     continue;
                 case 1180:
-                    vArray[r][s] = 1;
+                    matrix[r][s] = 1;
                     q = 0;
                     r = 1;
                     s = 1;
@@ -636,22 +634,23 @@ public class Amazing {
             print("I");        // 1210
 
             for (int i = 1; i <= horizontal; i++) {
-                if (vArray[i][j] >= 2)
-                    print("   ");  // 1240
-                else
-                    print("  I");  // 1260
+                if (matrix[i][j] == 0 || matrix[i][j] == 1) {
+                    print("  I");
+                } else if (matrix[i][j] == 2 || matrix[i][j] == 3) {
+                    print("   ");
+                }
             }
 
             print(" ");   // 1280
             println();
 
             for (int i = 1; i <= horizontal; i++) {
-                if (vArray[i][j] == 0)
-                    print(":--");   // 1300, 1340
-                else if (vArray[i][j] == 2)
-                    print(":--");  // 1310, 1340
-                else
-                    print(":  "); // 1320
+                if (matrix[i][j] == 0)
+                    print(":--");
+                else if (matrix[i][j] == 2)
+                    print(":--");
+                else if (matrix[i][j] == 1 || matrix[i][j] == 3)
+                    print(":  ");
             }
 
             print(":");    // 1360
