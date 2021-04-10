@@ -6,6 +6,7 @@ public class Maze {
     private static final int DEUX = 2; // ????
     public static final int TROIS = 3; //
     public static final int UN = 1;
+    public static final int GOTO_START = 270;
 
     private final int horizontal;
     private final int vertical;
@@ -88,32 +89,27 @@ public class Maze {
         while (target != -1) {
             switch (target) {
                 case 210:
-                    if (row != horizontal)
-                        GOTO(250);
+                    if (row != horizontal) {
+                        row++;
+                    }
                     else {
                         if (line != vertical) {
                             row = 1;
                             line++;
-                            GOTO(260);
-                            continue;
                         } else {
                             row = 1;
                             line = 1;
-                            GOTO(260);
                         }
                     }
-                    continue;
-                case 250:
-                    row++;
                     GOTO(260);
                     continue;
                 case 260:
                     if (isNotChemin(row, line))
                         GOTO(210);
                     else
-                        GOTO(270);
+                        GOTO(GOTO_START);
                     continue;
-                case 270: //start
+                case GOTO_START: //start
                     if (row - 1 == 0)
                         GOTO(600);
                     else
@@ -512,7 +508,7 @@ public class Maze {
                     continue;
                 case 1010:
                     q = 0;
-                    GOTO(270);
+                    GOTO(GOTO_START);
                     continue;
                 case 980:
                     matrixChemin[row][line - 1] = c;
@@ -523,7 +519,7 @@ public class Maze {
                     GOTO(1000);
                     continue;
                 case 1000:
-                    closeRightOpenBottom(row, line - 1);
+                    matrix[row][line - 1] = CellType.CLOSE_RIGHT;
                     line--;
                     if (mazeIsFinished(horizontal, vertical, c))
                         GOTO(END_LOOP);
@@ -557,16 +553,13 @@ public class Maze {
                     if (mazeIsFinished(horizontal, vertical, c))
                         GOTO(END_LOOP);
                     else
-                        GOTO(1080);
-                    continue;
-                case 1080:
-                    GOTO(600);
+                        GOTO(600);
                     continue;
                 case 1090:
                     if (q == 1) {
                         z = 1;
                         if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM) {
-                            closeRightOpenBottom(row, line);
+                            matrix[row][line] = CellType.CLOSE_RIGHT;
                             q = 0;
                             row = 1;
                             line = 1;
@@ -576,31 +569,22 @@ public class Maze {
                             q = 0;
                             GOTO(1190);
                         }
-                    } else
-                        GOTO(1100);
-                    continue;
-                case 1100:
-                    matrixChemin[row][line + 1] = c;
-                    c++;
-                    if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM)
-                        GOTO(1120);
-                    else
-                        GOTO(1110);
-                    continue;
-                case 1110:
-                    matrix[row][line] = CellType.OPEN;
-                    GOTO(1130);
-                    continue;
-                case 1120:
-                    closeRightOpenBottom(row, line);
-                    GOTO(1130);
-                    continue;
-                case 1130:
-                    line++;
-                    if (mazeIsFinished(vertical, horizontal, c))
-                        GOTO(END_LOOP);
-                    else
-                        GOTO(270);
+                    } else {
+                        matrixChemin[row][line + 1] = c;
+                        c++;
+                        if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM)
+                        {
+                            matrix[row][line] = CellType.CLOSE_RIGHT;
+                        }
+                        else {
+                            matrix[row][line] = CellType.OPEN;
+                        }
+                        line++;
+                        if (mazeIsFinished(vertical, horizontal, c))
+                            GOTO(END_LOOP);
+                        else
+                            GOTO(GOTO_START);
+                    }
                     continue;
                 case 1190:
                     GOTO(210);
@@ -647,10 +631,6 @@ public class Maze {
 
     private boolean isChemin(int row, int line) {
         return matrixChemin[row][line] != 0;
-    }
-
-    private void closeRightOpenBottom(int row, int line) {
-        matrix[row][line] = CellType.CLOSE_RIGHT;
     }
 
     private boolean mazeIsFinished(int horizontal, int vertical, int c) {
