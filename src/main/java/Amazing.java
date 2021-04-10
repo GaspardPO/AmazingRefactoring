@@ -9,6 +9,7 @@
 import java.util.Random;
 
 public class Amazing {
+    public static final int END_LOOP = 1200;
     static int target = 0;      // where GOTO goes
     public static Random random = new Random(0);
     static StringBuffer result = new StringBuffer();
@@ -30,7 +31,7 @@ public class Amazing {
         result.append(text);
     }
 
-    public static int rnd(int count) {
+    public static int rand(int count) {
         return (int) (count * random.nextFloat()) + 1;
     }
 
@@ -43,27 +44,25 @@ public class Amazing {
         print("Amazing - Copyright by Creative Computing, Morristown, NJ");
         println();
 
-        int h = horizontal;
-        int v = vertical;
-        if (h == 1 || v == 1) return;
+        if (horizontal == 1 || vertical == 1) return;
 
-        int[][] wArray = new int[h + 1][v + 1];
-        for (int i = 0; i <= h; i++) {
-            wArray[i] = new int[v + 1];
+        int[][] wArray = new int[horizontal + 1][vertical + 1];
+        for (int i = 0; i <= horizontal; i++) {
+            wArray[i] = new int[vertical + 1];
         }
 
-        int[][] vArray = new int[h + 1][v + 1];
-        for (int i = 0; i <= h; i++) {
-            vArray[i] = new int[v + 1];
+        int[][] vArray = new int[horizontal + 1][vertical + 1];
+        for (int i = 0; i <= horizontal; i++) {
+            vArray[i] = new int[vertical + 1];
         }
 
         int q = 0;
         int z = 0;
-        int x = rnd(h);
+        int position_de_la_porte = rand(horizontal);
 
-        // 130:170
-        for (int i = 1; i <= h; i++) {
-            if (i == x)
+        // 130:170 // crée la 1ere ligne ?
+        for (int i = 1; i <= horizontal; i++) {
+            if (i == position_de_la_porte)
                 print(":  ");
             else
                 print(":--");
@@ -74,24 +73,24 @@ public class Amazing {
 
         // 190
         int c = 1;
-        wArray[x][1] = c;
+        wArray[position_de_la_porte][1] = c;
         c++;
 
         // 200
-        int r = x;
+        int r = position_de_la_porte;
         int s = 1;
         GOTO(270);
 
         while (target != -1) {
             switch (target) {
                 case 210:
-                    if (r != h)
+                    if (r != horizontal)
                         GOTO(250);
                     else
                         GOTO(220);
                     continue;
                 case 220:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(240);
                     else
                         GOTO(230);
@@ -116,7 +115,7 @@ public class Amazing {
                     else
                         GOTO(270);
                     continue;
-                case 270:
+                case 270: //start
                     if (r - 1 == 0)
                         GOTO(600);
                     else
@@ -141,7 +140,7 @@ public class Amazing {
                         GOTO(310);
                     continue;
                 case 310:
-                    if (r == h)
+                    if (r == horizontal)
                         GOTO(350);
                     else
                         GOTO(320);
@@ -153,21 +152,21 @@ public class Amazing {
                         GOTO(330);
                     continue;
                 case 330:
-                    x = rnd(3);
+                    position_de_la_porte = rand(3);
                     GOTO(340);
                     continue;
                 case 340:
-                    if (x == 1)
+                    if (position_de_la_porte == 1)
                         GOTO(940);
-                    else if (x == 2)
+                    else if (position_de_la_porte == 2)
                         GOTO(980);
-                    else if (x == 3)
+                    else if (position_de_la_porte == 3)
                         GOTO(1020);
                     else
                         GOTO(350);
                     continue;
                 case 350:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(380);
                     else
                         GOTO(360);
@@ -189,33 +188,33 @@ public class Amazing {
                         GOTO(390);
                     continue;
                 case 390:
-                    x = rnd(3);
+                    position_de_la_porte = rand(3);
                     GOTO(400);
                     continue;
                 case 400:
-                    if (x == 1)
+                    if (position_de_la_porte == 1)
                         GOTO(940);
-                    else if (x == 2)
+                    else if (position_de_la_porte == 2)
                         GOTO(980);
-                    else if (x == 3)
+                    else if (position_de_la_porte == 3)
                         GOTO(1090);
                     else
                         GOTO(410);
                     continue;
                 case 410:
-                    x = rnd(2);
+                    position_de_la_porte = rand(2);
                     GOTO(420);
                     continue;
                 case 420:
-                    if (x == 1)
+                    if (position_de_la_porte == 1)
                         GOTO(940);
-                    else if (x == 2)
+                    else if (position_de_la_porte == 2)
                         GOTO(980);
                     else
                         GOTO(430);
                     continue;
                 case 430:
-                    if (r == h)
+                    if (r == horizontal)
                         GOTO(530);
                     else
                         GOTO(440);
@@ -227,7 +226,7 @@ public class Amazing {
                         GOTO(450);
                     continue;
                 case 450:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(480);
                     else
                         GOTO(460);
@@ -249,33 +248,33 @@ public class Amazing {
                         GOTO(490);
                     continue;
                 case 490:
-                    x = rnd(3);
+                    position_de_la_porte = rand(3);
                     GOTO(500);
                     continue;
                 case 500:
-                    if (x == 1)
+                    if (position_de_la_porte == 1)
                         GOTO(940);
-                    else if (x == 2)
+                    else if (position_de_la_porte == 2)
                         GOTO(1020);
-                    else if (x == 3)
+                    else if (position_de_la_porte == 3)
                         GOTO(1090);
                     else
                         GOTO(510);
                     continue;
                 case 510:
-                    x = rnd(2);
+                    position_de_la_porte = rand(2);
                     GOTO(520);
                     continue;
                 case 520:
-                    if (x == 1)
+                    if (position_de_la_porte == 1)
                         GOTO(940);
-                    else if (x == 2)
+                    else if (position_de_la_porte == 2)
                         GOTO(1020);
                     else
                         GOTO(530);
                     continue;
                 case 530:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(560);
                     else
                         GOTO(540);
@@ -297,13 +296,13 @@ public class Amazing {
                         GOTO(570);
                     continue;
                 case 570:
-                    x = rnd(2);
+                    position_de_la_porte = rand(2);
                     GOTO(580);
                     continue;
                 case 580:
-                    if (x == 1)
+                    if (position_de_la_porte == 1)
                         GOTO(940);
-                    else if (x == 2)
+                    else if (position_de_la_porte == 2)
                         GOTO(1090);
                     else
                         GOTO(590);
@@ -324,7 +323,7 @@ public class Amazing {
                         GOTO(620);
                     continue;
                 case 620:
-                    if (r == h)
+                    if (r == horizontal)
                         GOTO(720);
                     else
                         GOTO(630);
@@ -336,7 +335,7 @@ public class Amazing {
                         GOTO(640);
                     continue;
                 case 640:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(670);
                     else
                         GOTO(650);
@@ -358,33 +357,33 @@ public class Amazing {
                         GOTO(680);
                     continue;
                 case 680:
-                    x = rnd(3);
+                    position_de_la_porte = rand(3);
                     GOTO(690);
                     continue;
                 case 690:
-                    if (x == 1)
+                    if (position_de_la_porte == 1)
                         GOTO(980);
-                    else if (x == 2)
+                    else if (position_de_la_porte == 2)
                         GOTO(1020);
-                    else if (x == 3)
+                    else if (position_de_la_porte == 3)
                         GOTO(1090);
                     else
                         GOTO(700);
                     continue;
                 case 700:
-                    x = rnd(2);
+                    position_de_la_porte = rand(2);
                     GOTO(710);
                     continue;
                 case 710:
-                    if (x == 1)
+                    if (position_de_la_porte == 1)
                         GOTO(980);
-                    else if (x == 2)
+                    else if (position_de_la_porte == 2)
                         GOTO(1020);
                     else
                         GOTO(720);
                     continue;
                 case 720:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(750);
                     else
                         GOTO(730);
@@ -406,13 +405,13 @@ public class Amazing {
                         GOTO(760);
                     continue;
                 case 760:
-                    x = rnd(2);
+                    position_de_la_porte = rand(2);
                     GOTO(770);
                     continue;
                 case 770:
-                    if (x == 1)
+                    if (position_de_la_porte == 1)
                         GOTO(980);
-                    else if (x == 2)
+                    else if (position_de_la_porte == 2)
                         GOTO(1090);
                     else
                         GOTO(780);
@@ -421,7 +420,7 @@ public class Amazing {
                     GOTO(980);
                     continue;
                 case 790:
-                    if (r == h)
+                    if (r == horizontal)
                         GOTO(880);
                     else
                         GOTO(800);
@@ -433,7 +432,7 @@ public class Amazing {
                         GOTO(810);
                     continue;
                 case 810:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(840);
                     else
                         GOTO(820);
@@ -455,13 +454,13 @@ public class Amazing {
                         GOTO(850);
                     continue;
                 case 850:
-                    x = rnd(2);
+                    position_de_la_porte = rand(2);
                     GOTO(860);
                     continue;
                 case 860:
-                    if (x == 1)
+                    if (position_de_la_porte == 1)
                         GOTO(1020);
-                    else if (x == 2)
+                    else if (position_de_la_porte == 2)
                         GOTO(1090);
                     else
                         GOTO(870);
@@ -470,7 +469,7 @@ public class Amazing {
                     GOTO(1020);
                     continue;
                 case 880:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(910);
                     else
                         GOTO(890);
@@ -508,8 +507,8 @@ public class Amazing {
                     GOTO(960);
                     continue;
                 case 960:
-                    if (c == h * v + 1)
-                        GOTO(1200);
+                    if (mazeIsFinished(horizontal, vertical, c))
+                        GOTO(END_LOOP);
                     else
                         GOTO(970);
                     continue;
@@ -528,8 +527,8 @@ public class Amazing {
                 case 1000:
                     vArray[r][s - 1] = 1;
                     s--;
-                    if (c == h * v + 1)
-                        GOTO(1200);
+                    if (mazeIsFinished(horizontal, vertical, c))
+                        GOTO(END_LOOP);
                     else
                         GOTO(1010);
                     continue;
@@ -561,8 +560,8 @@ public class Amazing {
                     GOTO(1070);
                     continue;
                 case 1070:
-                    if (c == h * v + 1)
-                        GOTO(1200);
+                    if (mazeIsFinished(horizontal, vertical, c))
+                        GOTO(END_LOOP);
                     else
                         GOTO(1080);
                     continue;
@@ -593,8 +592,8 @@ public class Amazing {
                     continue;
                 case 1130:
                     s++;
-                    if (c == v * h + 1)
-                        GOTO(1200);
+                    if (mazeIsFinished(vertical, horizontal, c))
+                        GOTO(END_LOOP);
                     else
                         GOTO(1140);
                     continue;
@@ -626,18 +625,17 @@ public class Amazing {
                 case 1190:
                     GOTO(210);
                     continue;
-                case 1200:
+                case END_LOOP: // FIN
                     target = -1;
-                    continue;
             }
 
         }
 
         // 1200:
-        for (int j = 1; j <= v; j++) {
+        for (int j = 1; j <= vertical; j++) {
             print("I");        // 1210
 
-            for (int i = 1; i <= h; i++) {
+            for (int i = 1; i <= horizontal; i++) {
                 if (vArray[i][j] >= 2)
                     print("   ");  // 1240
                 else
@@ -647,7 +645,7 @@ public class Amazing {
             print(" ");   // 1280
             println();
 
-            for (int i = 1; i <= h; i++) {
+            for (int i = 1; i <= horizontal; i++) {
                 if (vArray[i][j] == 0)
                     print(":--");   // 1300, 1340
                 else if (vArray[i][j] == 2)
@@ -659,5 +657,9 @@ public class Amazing {
             print(":");    // 1360
             println();
         }
+    }
+
+    private static boolean mazeIsFinished(int horizontal, int vertical, int c) {
+        return c == horizontal * vertical + 1;
     }
 }

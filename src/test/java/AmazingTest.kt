@@ -76,4 +76,5 @@ class AmazingTest {
         Amazing.doit(4, 5)
         Assertions.assertEquals(expected, Amazing.result.toString())
     }
+
 }
