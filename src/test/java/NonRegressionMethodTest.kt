@@ -12,8 +12,8 @@ class NonRegressionMethodTest {
 
 
     fun runRnd(random : Int?, count : Int?): Int {
-        Amazing.random = Random(random!!.toLong())
-        return Amazing.rand(count!!)
+        val maze = Maze(0, 0, Random(random!!.toLong()))
+        return maze.rand(count!!)
     }
 
 }
