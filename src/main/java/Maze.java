@@ -7,7 +7,7 @@ public class Maze {
     private final int horizontal;
     private final int vertical;
 
-    int[][] wArray;
+    int[][] matrixChemin;
     int[][] matrix;
     int target = 0;      // where GOTO goes
     int q = 0;
@@ -31,9 +31,9 @@ public class Maze {
         this.vertical = vertical;
         this.random = random;
 
-        this.wArray = new int[horizontal + 1][vertical + 1];
+        this.matrixChemin = new int[horizontal + 1][vertical + 1];
         for (int i = 0; i <= horizontal; i++) {
-            wArray[i] = new int[vertical + 1];
+            matrixChemin[i] = new int[vertical + 1];
         }
 
         this.matrix = new int[horizontal + 1][vertical + 1];
@@ -71,7 +71,7 @@ public class Maze {
 
         // 190
         int c = 1;
-        wArray[rowChemin][1] = c;
+        matrixChemin[rowChemin][1] = c;
         c++;
 
         // 200
@@ -108,7 +108,7 @@ public class Maze {
                     GOTO(260);
                     continue;
                 case 260:
-                    if (wArray[row][line] == 0)
+                    if (isNotChemin(row, line))
                         GOTO(210);
                     else
                         GOTO(270);
@@ -120,7 +120,7 @@ public class Maze {
                         GOTO(280);
                     continue;
                 case 280:
-                    if (wArray[row - 1][line] != 0)
+                    if (isChemin(row-1, line))
                         GOTO(600);
                     else
                         GOTO(290);
@@ -132,7 +132,7 @@ public class Maze {
                         GOTO(300);
                     continue;
                 case 300:
-                    if (wArray[row][line - 1] != 0)
+                    if (isChemin(row, line-1))
                         GOTO(430);
                     else
                         GOTO(310);
@@ -144,7 +144,7 @@ public class Maze {
                         GOTO(320);
                     continue;
                 case 320:
-                    if (wArray[row + 1][line] != 0)
+                    if (isChemin(row+1, line))
                         GOTO(350);
                     else
                         GOTO(330);
@@ -180,7 +180,7 @@ public class Maze {
                     GOTO(390);
                     continue;
                 case 380:
-                    if (wArray[row][line + 1] != 0)
+                    if (isChemin(row, line+1))
                         GOTO(410);
                     else
                         GOTO(390);
@@ -218,7 +218,7 @@ public class Maze {
                         GOTO(440);
                     continue;
                 case 440:
-                    if (wArray[row + 1][line] != 0)
+                    if (isChemin(row+1, line))
                         GOTO(530);
                     else
                         GOTO(450);
@@ -240,7 +240,7 @@ public class Maze {
                     GOTO(490);
                     continue;
                 case 480:
-                    if (wArray[row][line + 1] != 0)
+                    if (isChemin(row, line+1))
                         GOTO(510);
                     else
                         GOTO(490);
@@ -288,7 +288,7 @@ public class Maze {
                     GOTO(570);
                     continue;
                 case 560:
-                    if (wArray[row][line + 1] != 0)
+                    if (isChemin(row, line+1))
                         GOTO(590);
                     else
                         GOTO(570);
@@ -315,7 +315,7 @@ public class Maze {
                         GOTO(610);
                     continue;
                 case 610:
-                    if (wArray[row][line - 1] != 0)
+                    if (isChemin(row, line-1))
                         GOTO(790);
                     else
                         GOTO(620);
@@ -327,7 +327,7 @@ public class Maze {
                         GOTO(630);
                     continue;
                 case 630:
-                    if (wArray[row + 1][line] != 0)
+                    if (isChemin(row+1, line))
                         GOTO(720);
                     else
                         GOTO(640);
@@ -349,7 +349,7 @@ public class Maze {
                     GOTO(680);
                     continue;
                 case 670:
-                    if (wArray[row][line + 1] != 0)
+                    if (isChemin(row, line+1))
                         GOTO(700);
                     else
                         GOTO(680);
@@ -397,7 +397,7 @@ public class Maze {
                     GOTO(760);
                     continue;
                 case 750:
-                    if (wArray[row][line + 1] != 0)
+                    if (isChemin(row, line+1))
                         GOTO(780);
                     else
                         GOTO(760);
@@ -424,7 +424,7 @@ public class Maze {
                         GOTO(800);
                     continue;
                 case 800:
-                    if (wArray[row + 1][line] != 0)
+                    if (isChemin(row +1, line))
                         GOTO(880);
                     else
                         GOTO(810);
@@ -446,7 +446,7 @@ public class Maze {
                     GOTO(990);
                     continue;
                 case 840:
-                    if (wArray[row][line + 1] != 0)
+                    if (isChemin(row, line+1))
                         GOTO(870);
                     else
                         GOTO(850);
@@ -483,7 +483,7 @@ public class Maze {
                     GOTO(920);
                     continue;
                 case 910:
-                    if (wArray[row][line + 1] != 0)
+                    if (isChemin(row, line+1))
                         GOTO(930);
                     else
                         GOTO(920);
@@ -495,7 +495,7 @@ public class Maze {
                     GOTO(1190);
                     continue;
                 case 940:
-                    wArray[row - 1][line] = c;
+                    matrixChemin[row - 1][line] = c;
                     GOTO(950);
                     continue;
                 case 950:
@@ -516,7 +516,7 @@ public class Maze {
                     GOTO(270);
                     continue;
                 case 980:
-                    wArray[row][line - 1] = c;
+                    matrixChemin[row][line - 1] = c;
                     GOTO(990);
                     continue;
                 case 990:
@@ -532,7 +532,7 @@ public class Maze {
                         GOTO(1010);
                     continue;
                 case 1020:
-                    wArray[row + 1][line] = c;
+                    matrixChemin[row + 1][line] = c;
                     GOTO(1030);
                     continue;
                 case 1030:
@@ -570,7 +570,7 @@ public class Maze {
                         GOTO(1100);
                     continue;
                 case 1100:
-                    wArray[row][line + 1] = c;
+                    matrixChemin[row][line + 1] = c;
                     c++;
                     if (matrix[row][line] == 0)
                         GOTO(1120);
@@ -671,6 +671,14 @@ public class Maze {
             print(":");    // 1360
             println();
         }
+    }
+
+    private boolean isNotChemin(int row, int line) {
+        return ! isChemin(row, line);
+    }
+
+    private boolean isChemin(int row, int line) {
+        return matrixChemin[row][line] != 0;
     }
 
     private void closeRightOpenBottom(int r, int s) {
