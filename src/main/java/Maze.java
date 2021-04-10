@@ -433,7 +433,7 @@ public class Maze {
                     continue;
                 case 820:
                     if (z == 1)
-                        GOTO(870);
+                        GOTO(1020);
                     else
                         GOTO(830);
                     continue;
@@ -443,24 +443,18 @@ public class Maze {
                     continue;
                 case 840:
                     if (isChemin(row, line + 1))
-                        GOTO(870);
+                        GOTO(1020);
                     else
                         GOTO(850);
                     continue;
                 case 850:
                     rowChemin = rand(2);
-                    GOTO(860);
-                    continue;
-                case 860:
                     if (rowChemin == UN)
                         GOTO(1020);
                     else if (rowChemin == DEUX)
                         GOTO(1090);
                     else
-                        GOTO(870);
-                    continue;
-                case 870:
-                    GOTO(1020);
+                        GOTO(1020);
                     continue;
                 case 880:
                     if (line != vertical)
