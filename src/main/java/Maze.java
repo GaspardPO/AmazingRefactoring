@@ -464,43 +464,29 @@ public class Maze {
                     continue;
                 case 880:
                     if (line != vertical)
-                        GOTO(910);
+                    {
+                        if (isChemin(row, line + 1))
+                            GOTO(210);
+                        else
+                            GOTO(1090);
+                    }
                     else
                         GOTO(890);
                     continue;
                 case 890:
                     if (z == 1)
-                        GOTO(930);
+                        GOTO(210);
                     else
-                        GOTO(900);
-                    continue;
-                case 900:
-                    q = 1;
-                    GOTO(920);
-                    continue;
-                case 910:
-                    if (isChemin(row, line + 1))
-                        GOTO(930);
-                    else
-                        GOTO(920);
-                    continue;
-                case 920:
-                    GOTO(1090);
-                    continue;
-                case 930:
-                    GOTO(1190);
+                    {
+                        q = 1;
+                        GOTO(1090);
+                    }
                     continue;
                 case 940:
                     matrixChemin[row - 1][line] = c;
-                    GOTO(950);
-                    continue;
-                case 950:
                     c++;
                     matrix[row - 1][line] = CellType.CLOSE_BOTTOM;
                     row--;
-                    GOTO(960);
-                    continue;
-                case 960:
                     if (mazeIsFinished(horizontal, vertical, c))
                         GOTO(END_LOOP);
                     else
@@ -516,9 +502,6 @@ public class Maze {
                     continue;
                 case 990:
                     c++;
-                    GOTO(1000);
-                    continue;
-                case 1000:
                     matrix[row][line - 1] = CellType.CLOSE_RIGHT;
                     line--;
                     if (mazeIsFinished(horizontal, vertical, c))
@@ -528,28 +511,12 @@ public class Maze {
                     continue;
                 case 1020:
                     matrixChemin[row + 1][line] = c;
-                    GOTO(1030);
-                    continue;
-                case 1030:
                     c++;
                     if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM)
-                        GOTO(1050);
+                        matrix[row][line] = CellType.CLOSE_BOTTOM;
                     else
-                        GOTO(1040);
-                    continue;
-                case 1040:
-                    matrix[row][line] = CellType.OPEN;
-                    GOTO(1060);
-                    continue;
-                case 1050:
-                    matrix[row][line] = CellType.CLOSE_BOTTOM;
-                    GOTO(1060);
-                    continue;
-                case 1060:
+                        matrix[row][line] = CellType.OPEN;
                     row++;
-                    GOTO(1070);
-                    continue;
-                case 1070:
                     if (mazeIsFinished(horizontal, vertical, c))
                         GOTO(END_LOOP);
                     else
@@ -567,7 +534,7 @@ public class Maze {
                         } else {
                             matrix[row][line] = CellType.OPEN;
                             q = 0;
-                            GOTO(1190);
+                            GOTO(210);
                         }
                     } else {
                         matrixChemin[row][line + 1] = c;
@@ -585,9 +552,6 @@ public class Maze {
                         else
                             GOTO(GOTO_START);
                     }
-                    continue;
-                case 1190:
-                    GOTO(210);
                     continue;
                 case END_LOOP: // FIN
                     target = -1;
