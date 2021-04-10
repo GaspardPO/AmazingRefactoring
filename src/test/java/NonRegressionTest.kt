@@ -67,7 +67,7 @@ class NonRegressionTest {
 
     @Test
     fun non_reg_with_legacy_small_maze(){
-        LegacyApprovals.LockDown(this, "runAmazing", Range.get(50, 100), Range.get(-10, 10), Range.get(-10, 10))
+        LegacyApprovals.LockDown(this, "runAmazing", Range.get(50, 100), Range.get(-1, 10), Range.get(-1, 10))
     }
 
     @Test
