@@ -84,15 +84,14 @@ public class Maze {
 
         int row = rowChemin;
         int line = 1;
-        GOTO(270);
+        GOTO(GOTO_START);
 
         while (target != -1) {
             switch (target) {
                 case 210:
                     if (row != horizontal) {
                         row++;
-                    }
-                    else {
+                    } else {
                         if (line != vertical) {
                             row = 1;
                             line++;
@@ -110,6 +109,7 @@ public class Maze {
                         GOTO(GOTO_START);
                     continue;
                 case GOTO_START: //start
+                    q = 0;
                     if (row - 1 == 0)
                         GOTO(600);
                     else
@@ -118,36 +118,26 @@ public class Maze {
                 case 280:
                     if (isChemin(row - 1, line))
                         GOTO(600);
-                    else
-                        GOTO(290);
-                    continue;
-                case 290:
-                    if (line - 1 == 0)
-                        GOTO(430);
-                    else
-                        GOTO(300);
-                    continue;
-                case 300:
-                    if (isChemin(row, line - 1))
-                        GOTO(430);
-                    else
-                        GOTO(310);
-                    continue;
-                case 310:
-                    if (row == horizontal)
-                        GOTO(350);
-                    else
-                        GOTO(320);
-                    continue;
-                case 320:
-                    if (isChemin(row + 1, line))
-                        GOTO(350);
-                    else
-                        GOTO(330);
-                    continue;
-                case 330:
-                    rowChemin = rand(3);
-                    GOTO(340);
+                    else {
+                        if (line - 1 == 0)
+                            GOTO(430);
+                        else {
+                            if (isChemin(row, line - 1))
+                                GOTO(430);
+                            else {
+                                if (row == horizontal)
+                                    GOTO(350);
+                                else {
+                                    if (isChemin(row + 1, line))
+                                        GOTO(350);
+                                    else {
+                                        rowChemin = rand(3);
+                                        GOTO(340);
+                                    }
+                                }
+                            }
+                        }
+                    }
                     continue;
                 case 340:
                     if (rowChemin == UN)
@@ -160,32 +150,24 @@ public class Maze {
                         GOTO(350);
                     continue;
                 case 350:
-                    if (line != vertical)
-                        GOTO(380);
-                    else
+                    if (line != vertical) {
+                        if (isChemin(row, line + 1))
+                            GOTO(410);
+                        else
+                            GOTO(390);
+                    } else
                         GOTO(360);
                     continue;
                 case 360:
                     if (z == 1)
                         GOTO(410);
-                    else
-                        GOTO(370);
-                    continue;
-                case 370:
-                    q = 1;
-                    GOTO(390);
-                    continue;
-                case 380:
-                    if (isChemin(row, line + 1))
-                        GOTO(410);
-                    else
+                    else {
+                        q = 1;
                         GOTO(390);
+                    }
                     continue;
                 case 390:
                     rowChemin = rand(3);
-                    GOTO(400);
-                    continue;
-                case 400:
                     if (rowChemin == UN)
                         GOTO(940);
                     else if (rowChemin == DEUX)
@@ -197,9 +179,6 @@ public class Maze {
                     continue;
                 case 410:
                     rowChemin = rand(2);
-                    GOTO(420);
-                    continue;
-                case 420:
                     if (rowChemin == UN)
                         GOTO(940);
                     else if (rowChemin == DEUX)
@@ -210,20 +189,16 @@ public class Maze {
                 case 430:
                     if (row == horizontal)
                         GOTO(530);
-                    else
-                        GOTO(440);
-                    continue;
-                case 440:
-                    if (isChemin(row + 1, line))
-                        GOTO(530);
-                    else
-                        GOTO(450);
-                    continue;
-                case 450:
-                    if (line != vertical)
-                        GOTO(480);
-                    else
-                        GOTO(460);
+                    else {
+                        if (isChemin(row + 1, line))
+                            GOTO(530);
+                        else {
+                            if (line != vertical)
+                                GOTO(480);
+                            else
+                                GOTO(460);
+                        }
+                    }
                     continue;
                 case 460:
                     if (z == 1)
@@ -329,89 +304,59 @@ public class Maze {
                         GOTO(640);
                     continue;
                 case 640:
-                    if (line != vertical)
-                        GOTO(670);
-                    else
-                        GOTO(650);
-                    continue;
-                case 650:
-                    if (z == 1)
-                        GOTO(700);
-                    else
-                        GOTO(660);
-                    continue;
-                case 660:
-                    q = 1;
-                    GOTO(680);
-                    continue;
-                case 670:
-                    if (isChemin(row, line + 1))
-                        GOTO(700);
-                    else
-                        GOTO(680);
+                    if (line != vertical) {
+                        if (isChemin(row, line + 1))
+                            GOTO(700);
+                        else
+                            GOTO(680);
+                    }
+                    else {
+                        if (z == 1)
+                            GOTO(700);
+                        else {
+                            q = 1;
+                            GOTO(680);
+                        }
+                    }
                     continue;
                 case 680:
                     rowChemin = rand(3);
-                    GOTO(690);
-                    continue;
-                case 690:
                     if (rowChemin == UN)
                         GOTO(980);
                     else if (rowChemin == DEUX)
                         GOTO(1020);
                     else if (rowChemin == TROIS)
                         GOTO(1090);
-                    else
-                        GOTO(700);
                     continue;
                 case 700:
                     rowChemin = rand(2);
-                    GOTO(710);
-                    continue;
-                case 710:
                     if (rowChemin == UN)
                         GOTO(980);
                     else if (rowChemin == DEUX)
                         GOTO(1020);
-                    else
-                        GOTO(720);
                     continue;
                 case 720:
-                    if (line != vertical)
-                        GOTO(750);
-                    else
-                        GOTO(730);
-                    continue;
-                case 730:
-                    if (z == 1)
-                        GOTO(780);
-                    else
-                        GOTO(740);
-                    continue;
-                case 740:
-                    q = 1;
-                    GOTO(760);
-                    continue;
-                case 750:
-                    if (isChemin(row, line + 1))
-                        GOTO(780);
-                    else
-                        GOTO(760);
+                    if (line != vertical) {
+                        if (isChemin(row, line + 1))
+                            GOTO(980);
+                        else
+                            GOTO(760);
+                    }
+                    else {
+                        if (z == 1)
+                            GOTO(980);
+                        else {
+                            q = 1;
+                            GOTO(760);
+                        }
+                    }
                     continue;
                 case 760:
                     rowChemin = rand(2);
-                    GOTO(770);
-                    continue;
-                case 770:
                     if (rowChemin == UN)
                         GOTO(980);
                     else if (rowChemin == DEUX)
                         GOTO(1090);
-                    else
-                        GOTO(780);
-                    continue;
-                case 780:
-                    GOTO(980);
                     continue;
                 case 790:
                     if (row == horizontal)
@@ -422,58 +367,40 @@ public class Maze {
                 case 800:
                     if (isChemin(row + 1, line))
                         GOTO(880);
-                    else
-                        GOTO(810);
-                    continue;
-                case 810:
-                    if (line != vertical)
-                        GOTO(840);
-                    else
-                        GOTO(820);
-                    continue;
-                case 820:
-                    if (z == 1)
-                        GOTO(1020);
-                    else
-                        GOTO(830);
-                    continue;
-                case 830:
-                    q = 1;
-                    GOTO(990);
-                    continue;
-                case 840:
-                    if (isChemin(row, line + 1))
-                        GOTO(1020);
-                    else
-                        GOTO(850);
-                    continue;
-                case 850:
-                    rowChemin = rand(2);
-                    if (rowChemin == UN)
-                        GOTO(1020);
-                    else if (rowChemin == DEUX)
-                        GOTO(1090);
-                    else
-                        GOTO(1020);
+                    else {
+                        if (line != vertical) {
+                            if (isChemin(row, line + 1))
+                                GOTO(1020);
+                            else {
+                                rowChemin = rand(2);
+                                if (rowChemin == UN)
+                                    GOTO(1020);
+                                else if (rowChemin == DEUX)
+                                    GOTO(1090);
+                            }
+                        } else {
+                            if (z == 1)
+                                GOTO(1020);
+                            else {
+                                q = 1;
+                                GOTO(990);
+                            }
+                        }
+                    }
                     continue;
                 case 880:
-                    if (line != vertical)
-                    {
+                    if (line != vertical) {
                         if (isChemin(row, line + 1))
                             GOTO(210);
                         else
                             GOTO(1090);
-                    }
-                    else
-                        GOTO(890);
-                    continue;
-                case 890:
-                    if (z == 1)
-                        GOTO(210);
-                    else
-                    {
-                        q = 1;
-                        GOTO(1090);
+                    } else {
+                        if (z == 1)
+                            GOTO(210);
+                        else {
+                            q = 1;
+                            GOTO(1090);
+                        }
                     }
                     continue;
                 case 940:
@@ -483,12 +410,9 @@ public class Maze {
                     row--;
                     if (mazeIsFinished(horizontal, vertical, c))
                         GOTO(END_LOOP);
-                    else
-                        GOTO(1010);
-                    continue;
-                case 1010:
-                    q = 0;
-                    GOTO(GOTO_START);
+                    else {
+                        GOTO(GOTO_START);
+                    }
                     continue;
                 case 980:
                     matrixChemin[row][line - 1] = c;
@@ -500,8 +424,9 @@ public class Maze {
                     line--;
                     if (mazeIsFinished(horizontal, vertical, c))
                         GOTO(END_LOOP);
-                    else
-                        GOTO(1010);
+                    else {
+                        GOTO(GOTO_START);
+                    }
                     continue;
                 case 1020:
                     matrixChemin[row + 1][line] = c;
@@ -533,11 +458,9 @@ public class Maze {
                     } else {
                         matrixChemin[row][line + 1] = c;
                         c++;
-                        if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM)
-                        {
+                        if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM) {
                             matrix[row][line] = CellType.CLOSE_RIGHT;
-                        }
-                        else {
+                        } else {
                             matrix[row][line] = CellType.OPEN;
                         }
                         line++;
