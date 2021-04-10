@@ -3,25 +3,18 @@ public enum CellType {
       I
     :--
      */
-    CLOSE_RIGHT_BOTTOM(0),
+    CLOSE_RIGHT_BOTTOM,
 
     /*
       I
     :
      */
-    CLOSE_RIGHT(1),
+    CLOSE_RIGHT,
 
     /*
 
     :--
      */
-    CLOSE_BOTTOM(2),
-    OPEN(3);
-
-
-    private final int value;
-
-    CellType(int value) {
-        this.value = value;
-    }
+    CLOSE_BOTTOM,
+    OPEN
 }
