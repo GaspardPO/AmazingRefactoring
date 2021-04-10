@@ -1,8 +1,6 @@
 import java.util.Random;
 
 public class Maze {
-    public static final int END_LOOP = 1200;
-
     private static final int DEUX = 2; // ????
     public static final int TROIS = 3; //
     public static final int UN = 1;
@@ -17,18 +15,12 @@ public class Maze {
     int q = 0;      // continue ? / start a new iteration ?  // 0 or 1
     int z = 0;      // mis une seule fois à 1, testé plusieurs fois.
     int roll;       // variable temp pour les choix aléatoires.
+    int nbOfIterations = 1; // nb of iterations, and also used to flag cells where the path is.
     Random random;
 
 
     StringBuffer result = new StringBuffer();
 
-    private void println() {
-        result.append("\n");
-    }
-
-    public void print(String text) {
-        result.append(text);
-    }
 
     public Maze(int horizontal, int vertical, Random random) {
         this.horizontal = horizontal;
@@ -49,15 +41,6 @@ public class Maze {
         }
     }
 
-    public void GOTO(int lineno) {
-        target = lineno;
-    }
-
-
-    public int rand(int count) {
-        return (int) (count * random.nextFloat()) + 1;
-    }
-
     public void extracted() {
         print("Amazing - Copyright by Creative Computing, Morristown, NJ");
         println();
@@ -65,7 +48,7 @@ public class Maze {
         if (horizontal == 1 || vertical == 1) return;
         this.roll = rand(horizontal);
 
-        // 130:170 // crée la 1ere ligne ?
+        // crée la 1ere ligne ?
         for (int i = 1; i <= horizontal; i++) {
             if (i == roll)
                 print(":  ");
@@ -77,16 +60,14 @@ public class Maze {
         println();
 
 
-        int c = 1;
-        matrixChemin[roll][1] = c;
-        c++;
-
+        matrixChemin[roll][1] = nbOfIterations;
+        nbOfIterations++;
 
         int row = roll;
         int line = 1;
         GOTO(GOTO_START);
 
-        while (target != -1) {
+        while (isNotFinished()) {
             switch (target) {
                 case 210:
                     if (row != horizontal) {
@@ -126,8 +107,7 @@ public class Maze {
                                         GOTO(940);
                                     else
                                         GOTO(570);
-                                }
-                                else {
+                                } else {
                                     if (z == 1)
                                         GOTO(940);
                                     else {
@@ -135,8 +115,7 @@ public class Maze {
                                         GOTO(570);
                                     }
                                 }
-                            }
-                            else {
+                            } else {
                                 if (line != vertical) {
                                     if (isChemin(row, line + 1))
                                         GOTO(510);
@@ -153,7 +132,7 @@ public class Maze {
                             }
                         } else {
                             if (row == horizontal || isChemin(row + 1, line)) {
-                                if (line != vertical ) {
+                                if (line != vertical) {
                                     if (isChemin(row, line + 1))
                                         GOTO(410);
                                     else
@@ -235,8 +214,7 @@ public class Maze {
                                         GOTO(760);
                                     }
                                 }
-                            }
-                            else {
+                            } else {
                                 if (line != vertical) {
                                     if (isChemin(row, line + 1))
                                         GOTO(700);
@@ -318,42 +296,31 @@ public class Maze {
                     }
                     continue;
                 case 940:
-                    matrixChemin[row - 1][line] = c;
-                    c++;
+                    matrixChemin[row - 1][line] = nbOfIterations;
+                    nbOfIterations++;
                     matrix[row - 1][line] = CellType.CLOSE_BOTTOM;
                     row--;
-                    if (mazeIsFinished(horizontal, vertical, c))
-                        GOTO(END_LOOP);
-                    else {
-                        GOTO(GOTO_START);
-                    }
+                    GOTO(GOTO_START);
                     continue;
                 case 980:
-                    matrixChemin[row][line - 1] = c;
+                    matrixChemin[row][line - 1] = nbOfIterations;
                     GOTO(990);
                     continue;
                 case 990:
-                    c++;
+                    nbOfIterations++;
                     matrix[row][line - 1] = CellType.CLOSE_RIGHT;
                     line--;
-                    if (mazeIsFinished(horizontal, vertical, c))
-                        GOTO(END_LOOP);
-                    else {
-                        GOTO(GOTO_START);
-                    }
+                    GOTO(GOTO_START);
                     continue;
                 case 1020:
-                    matrixChemin[row + 1][line] = c;
-                    c++;
+                    matrixChemin[row + 1][line] = nbOfIterations;
+                    nbOfIterations++;
                     if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM)
                         matrix[row][line] = CellType.CLOSE_BOTTOM;
                     else
                         matrix[row][line] = CellType.OPEN;
                     row++;
-                    if (mazeIsFinished(horizontal, vertical, c))
-                        GOTO(END_LOOP);
-                    else
-                        GOTO(600);
+                    GOTO(600);
                     continue;
                 case 1090:
                     if (q == 1) {
@@ -370,31 +337,24 @@ public class Maze {
                             GOTO(210);
                         }
                     } else {
-                        matrixChemin[row][line + 1] = c;
-                        c++;
+                        matrixChemin[row][line + 1] = nbOfIterations;
+                        nbOfIterations++;
                         if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM) {
                             matrix[row][line] = CellType.CLOSE_RIGHT;
                         } else {
                             matrix[row][line] = CellType.OPEN;
                         }
                         line++;
-                        if (mazeIsFinished(vertical, horizontal, c))
-                            GOTO(END_LOOP);
-                        else
-                            GOTO(GOTO_START);
+                        GOTO(GOTO_START);
                     }
-                    continue;
-                case END_LOOP: // FIN
-                    target = -1;
             }
 
         }
 
-        // 1200:
         for (
                 int j = 1;
                 j <= vertical; j++) {
-            print("I");        // 1210
+            print("I");
 
             for (int i = 1; i <= horizontal; i++) {
                 if (matrix[i][j] == CellType.CLOSE_RIGHT_BOTTOM || matrix[i][j] == CellType.CLOSE_RIGHT) {
@@ -404,7 +364,7 @@ public class Maze {
                 }
             }
 
-            print(" ");   // 1280
+            print(" ");
             println();
 
             for (int i = 1; i <= horizontal; i++) {
@@ -419,13 +379,23 @@ public class Maze {
             print(":");
             println();
         }
+    }
 
+    public void GOTO(int lineno) {
+        target = lineno;
+    }
+
+    public int rand(int count) {
+        return (int) (count * random.nextFloat()) + 1;
     }
 
     private boolean isUneChanceSurDeux() {
         return rand(2) == UN;
     }
 
+    private boolean isNotFinished() {
+        return nbOfIterations != (horizontal * vertical) + 1;
+    }
 
     private boolean isNotChemin(int row, int line) {
         return !isChemin(row, line);
@@ -435,7 +405,11 @@ public class Maze {
         return matrixChemin[row][line] != 0;
     }
 
-    private boolean mazeIsFinished(int horizontal, int vertical, int c) {
-        return c == horizontal * vertical + 1;
+    private void println() {
+        result.append("\n");
+    }
+
+    public void print(String text) {
+        result.append(text);
     }
 }
