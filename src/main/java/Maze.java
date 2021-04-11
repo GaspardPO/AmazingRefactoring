@@ -20,7 +20,9 @@ public class Maze {
     int z = 0;      // mis une seule fois à 1, testé plusieurs fois. quand on arrive à la dernière ligne ?
     int roll;       // variable temp pour les choix aléatoires. soit 1/2, soit 1/2/3. soit n'importe où dans la 1ere ligne pour démarrer.
     int nbOfIterations = 1; // nb of iterations, and also used to flag cells where the path is.
-
+    int row;
+    int line;
+    
     StringBuffer result = new StringBuffer();
 
     public Maze(int horizontalSize, int verticalSize, Random random) {
@@ -64,8 +66,8 @@ public class Maze {
         matrixChemin[roll][1] = nbOfIterations;
         nbOfIterations++;
 
-        int row = roll;
-        int line = 1;
+        row = roll;
+        line = 1;
         GOTO(210);
 
         while (isNotFinished()) {
@@ -87,7 +89,8 @@ public class Maze {
                             if (line - 1 == FIRST_LINE || isChemin(row, line - 1)) {
                                 if (row == horizontalSize || isChemin(row + 1, line)) {
                                     if (line != verticalSize && isChemin(row, line + 1) || line == verticalSize && z == 1) {
-                                        GOTO(940);
+                                        GOTO(940); // potentiellement on a fini et on sort.
+                                        // TODO : ici doit sûrement finir ?
                                     }
 
                                     if (line != verticalSize && !isChemin(row, line + 1)) {
@@ -129,9 +132,9 @@ public class Maze {
                                 } else {
                                     roll = rand(3);
                                     if (roll == UN)
-                                        GOTO(940);
+                                        goto940();
                                     else if (roll == DEUX)
-                                        GOTO(980);
+                                        goto980();
                                     else if (roll == TROIS)
                                         GOTO(1020);
                                 }
@@ -142,38 +145,46 @@ public class Maze {
                 case 390:
                     roll = rand(3);
                     if (roll == UN)
-                        GOTO(940);
+                        goto940();
                     else if (roll == DEUX)
-                        GOTO(980);
+                        goto980();
                     else if (roll == TROIS)
-                        GOTO(1090);
+                        goto1090();
                     continue;
                 case 410:
-                    if (isUneChanceSurDeux())
-                        GOTO(940);
-                    else
-                        GOTO(980);
+                    if (isUneChanceSurDeux()) {
+                        matrixChemin[row - 1][line] = nbOfIterations;
+                        matrix[row - 1][line] = CellType.CLOSE_BOTTOM;
+                        row--;
+                    }
+                    else {
+                        matrixChemin[row][line - 1] = nbOfIterations;
+                        matrix[row][line - 1] = CellType.CLOSE_RIGHT;
+                        line--;
+                    }
+                    nbOfIterations++;
+                    GOTO(GOTO_START);
                     continue;
                 case 490:
                     roll = rand(3);
                     if (roll == UN)
-                        GOTO(940);
+                        goto940();
                     else if (roll == DEUX)
                         GOTO(1020);
                     else if (roll == TROIS)
-                        GOTO(1090);
+                        goto1090();
                     continue;
                 case 510:
                     if (isUneChanceSurDeux())
-                        GOTO(940);
+                        goto940();
                     else
                         GOTO(1020);
                     continue;
                 case 570:
                     if (isUneChanceSurDeux())
-                        GOTO(940);
+                        goto940();
                     else
-                        GOTO(1090);
+                        goto1090();
                     continue;
                 case 600:
                     if (line - 1 == FIRST_LINE || isChemin(row, line - 1)) {
@@ -182,13 +193,13 @@ public class Maze {
                                 if (isChemin(row, line + 1))
                                     GOTO(210);
                                 else
-                                    GOTO(1090);
+                                    goto1090();
                             } else {
                                 if (z == 1)
                                     GOTO(210);
                                 else {
                                     q = 1;
-                                    GOTO(1090);
+                                    goto1090();
                                 }
                             }
                         }
@@ -200,7 +211,7 @@ public class Maze {
                                     if (isUneChanceSurDeux())
                                         GOTO(1020);
                                     else
-                                        GOTO(1090);
+                                        goto1090();
                                 }
                             } else {
                                 if (z == 1)
@@ -219,15 +230,20 @@ public class Maze {
                         if (row == horizontalSize || isChemin(row + 1, line)) {
                             if (line != verticalSize) {
                                 if (isChemin(row, line + 1))
-                                    GOTO(980);
+                                    goto980();
+                                else if (isUneChanceSurDeux())
+                                    goto980();
                                 else
-                                    GOTO(760);
+                                    goto1090();
                             } else {
                                 if (z == 1)
-                                    GOTO(980);
+                                    goto980();
                                 else {
                                     q = 1;
-                                    GOTO(760);
+                                    if (isUneChanceSurDeux())
+                                        goto980();
+                                    else
+                                        goto1090();
                                 }
                             }
                         } else {
@@ -250,70 +266,23 @@ public class Maze {
                 case 680:
                     roll = rand(3);
                     if (roll == UN)
-                        GOTO(980);
+                        goto980();
                     else if (roll == DEUX)
                         GOTO(1020);
                     else if (roll == TROIS)
-                        GOTO(1090);
+                        goto1090();
                     continue;
                 case 700:
                     if (isUneChanceSurDeux())
-                        GOTO(980);
+                        goto980();
                     else
                         GOTO(1020);
                     continue;
-                case 760:
-                    if (isUneChanceSurDeux())
-                        GOTO(980);
-                    else
-                        GOTO(1090);
-                    continue;
                 case 940:
-                    matrixChemin[row - 1][line] = nbOfIterations;
-                    nbOfIterations++;
-                    matrix[row - 1][line] = CellType.CLOSE_BOTTOM;
-                    row--;
-                    GOTO(GOTO_START);
-                    continue;
-                case 980:
-                    matrixChemin[row][line - 1] = nbOfIterations;
-                    nbOfIterations++;
-                    matrix[row][line - 1] = CellType.CLOSE_RIGHT;
-                    line--;
-                    GOTO(GOTO_START);
+                    goto940();
                     continue;
                 case 1020:
-                    matrixChemin[row + 1][line] = nbOfIterations;
-                    nbOfIterations++;
-                    if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM)
-                        matrix[row][line] = CellType.CLOSE_BOTTOM;
-                    else
-                        matrix[row][line] = CellType.OPEN;
-                    row++;
-                    GOTO(600);
-                    continue;
-                case 1090:
-                    if (q == 1) {
-                        z = 1;      // only time when z is changed.
-                        if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM) {
-                            matrix[row][line] = CellType.CLOSE_RIGHT;
-                            row = 1;
-                            line = 1;
-                        } else {
-                            matrix[row][line] = CellType.OPEN;
-                        }
-                        GOTO(210);
-                    } else {
-                        matrixChemin[row][line + 1] = nbOfIterations;
-                        nbOfIterations++;
-                        if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM) {
-                            matrix[row][line] = CellType.CLOSE_RIGHT;
-                        } else {
-                            matrix[row][line] = CellType.OPEN;
-                        }
-                        line++;
-                        GOTO(GOTO_START);
-                    }
+                    goto1020();
             }
         }
 
@@ -333,6 +302,57 @@ public class Maze {
 
             print(":");
             println();
+        }
+    }
+
+    private void goto1020() {
+        matrixChemin[row + 1][line] = nbOfIterations;
+        nbOfIterations++;
+        if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM)
+            matrix[row][line] = CellType.CLOSE_BOTTOM;
+        else
+            matrix[row][line] = CellType.OPEN;
+        row++;
+        GOTO(600);
+    }
+
+    private void goto940() {
+        matrixChemin[row - 1][line] = nbOfIterations;
+        nbOfIterations++;
+        matrix[row - 1][line] = CellType.CLOSE_BOTTOM;
+        row--;
+        GOTO(GOTO_START);
+    }
+
+    private void goto980() {
+        matrixChemin[row][line - 1] = nbOfIterations;
+        nbOfIterations++;
+        matrix[row][line - 1] = CellType.CLOSE_RIGHT;
+        line--;
+        GOTO(GOTO_START);
+    }
+
+    private void goto1090() {
+        if (q == 1) {
+            z = 1;      // only time when z is changed.
+            if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM) {
+                matrix[row][line] = CellType.CLOSE_RIGHT;
+                row = 1;
+                line = 1;
+            } else {
+                matrix[row][line] = CellType.OPEN;
+            }
+            GOTO(210);
+        } else {
+            matrixChemin[row][line + 1] = nbOfIterations;
+            nbOfIterations++;
+            if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM) {
+                matrix[row][line] = CellType.CLOSE_RIGHT;
+            } else {
+                matrix[row][line] = CellType.OPEN;
+            }
+            line++;
+            GOTO(GOTO_START);
         }
     }
 
