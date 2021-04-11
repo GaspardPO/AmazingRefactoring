@@ -5,6 +5,8 @@ public class Maze {
     public static final int TROIS = 3; //
     public static final int UN = 1;
     public static final int GOTO_START = 270;
+    public static final int FIRST_ROW = 0;
+    public static final int FIRST_LINE = 0;
 
     private final int horizontalSize;
     private final int verticalSize;
@@ -32,9 +34,9 @@ public class Maze {
         }
 
         this.matrix = new CellType[horizontalSize + 1][verticalSize + 1];
-        for (int i = 0; i <= horizontalSize; i++) {
+        for (int i = FIRST_ROW; i <= horizontalSize; i++) {
             matrix[i] = new CellType[verticalSize + 1];
-            for (int j = 0; j <= verticalSize; j++) {
+            for (int j = FIRST_LINE; j <= verticalSize; j++) {
                 matrix[i][j] = CellType.CLOSE_RIGHT_BOTTOM;
             }
         }
@@ -64,33 +66,19 @@ public class Maze {
 
         int row = roll;
         int line = 1;
-        GOTO(GOTO_START);
+        GOTO(210);
 
         while (isNotFinished()) {
             switch (target) {
                 case 210:
-                    if (row != horizontalSize) {
-                        row++;
-                    } else {
-                        if (line != verticalSize) {
-                            row = 1;
-                            line++;
-                        } else {
-                            row = 1;
-                            line = 1;
-                        }
-                    }
-                    GOTO(260);
-                    continue;
-                case 260:
-                    if (!isChemin(row, line))
-                        GOTO(210);
-                    else
-                        GOTO(GOTO_START);
+                    int[] rowLine = searchNewCell(row, line);
+                    row = rowLine[0];
+                    line = rowLine[1];
+                    GOTO(GOTO_START);
                     continue;
                 case GOTO_START:
                     q = 0;
-                    if (row - 1 == 0)
+                    if (row - 1 == FIRST_ROW)
                         GOTO(600);
                     else
                         GOTO(280);
@@ -99,20 +87,17 @@ public class Maze {
                     if (isChemin(row - 1, line))
                         GOTO(600);
                     else {
-                        if (line - 1 == 0 || isChemin(row, line - 1)) {
+                        if (line - 1 == FIRST_LINE || isChemin(row, line - 1)) {
                             if (row == horizontalSize || isChemin(row + 1, line)) {
-                                if (line != verticalSize) {
-                                    if (isChemin(row, line + 1))
-                                        GOTO(940);
-                                    else
-                                        GOTO(570);
-                                } else {
-                                    if (z == 1)
-                                        GOTO(940);
-                                    else {
-                                        q = 1;
-                                        GOTO(570);
-                                    }
+                                if (line != verticalSize && isChemin(row, line + 1) || line == verticalSize && z == 1) {
+                                    GOTO(940);
+                                }
+
+                                if (line != verticalSize && !isChemin(row, line + 1)) {
+                                    GOTO(570);
+                                } else if (line == verticalSize && z != 1) {
+                                    q = 1;
+                                    GOTO(570);
                                 }
                             } else {
                                 if (line != verticalSize) {
@@ -193,7 +178,7 @@ public class Maze {
                         GOTO(1090);
                     continue;
                 case 600:
-                    if (line - 1 == 0)
+                    if (line - 1 == FIRST_LINE)
                         GOTO(790);
                     else {
                         if (isChemin(row, line - 1))
@@ -326,15 +311,12 @@ public class Maze {
                         z = 1;      // only time when z is changed.
                         if (matrix[row][line] == CellType.CLOSE_RIGHT_BOTTOM) {
                             matrix[row][line] = CellType.CLOSE_RIGHT;
-                            q = 0;
                             row = 1;
                             line = 1;
-                            GOTO(260);
                         } else {
                             matrix[row][line] = CellType.OPEN;
-                            q = 0;
-                            GOTO(210);
                         }
+                        GOTO(210);
                     } else {
                         matrixChemin[row][line + 1] = nbOfIterations;
                         nbOfIterations++;
@@ -349,7 +331,7 @@ public class Maze {
             }
         }
 
-        for (int j = 1;j <= verticalSize; j++) {
+        for (int j = 1; j <= verticalSize; j++) {
             print("I");
 
             for (int i = 1; i <= horizontalSize; i++) {
@@ -366,6 +348,23 @@ public class Maze {
             print(":");
             println();
         }
+    }
+
+    private int[] searchNewCell(int row, int line) {
+        do {
+            if (row != horizontalSize) {
+                row++;
+            } else {
+                if (line != verticalSize) {
+                    row = 1;
+                    line++;
+                } else {
+                    row = 1;
+                    line = 1;
+                }
+            }
+        } while (!isChemin(row, line));
+        return new int[] {row, line};
     }
 
     public void GOTO(int lineno) {
