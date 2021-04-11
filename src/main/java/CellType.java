@@ -1,20 +1,14 @@
 public enum CellType {
-    /*
-      I
-    :--
-     */
-    CLOSE_RIGHT_BOTTOM,
+    CLOSE_RIGHT_BOTTOM("  I", ":--"),
+    CLOSE_RIGHT("  I", ":  "),
+    CLOSE_BOTTOM("   ", ":--"),
+    OPEN("   ", ":  ");
 
-    /*
-      I
-    :
-     */
-    CLOSE_RIGHT,
+    final String right;
+    final String bottom;
 
-    /*
-
-    :--
-     */
-    CLOSE_BOTTOM,
-    OPEN
+    CellType(String right, String bottom) {
+        this.right = right;
+        this.bottom = bottom;
+    }
 }

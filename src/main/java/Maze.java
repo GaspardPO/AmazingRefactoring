@@ -50,9 +50,9 @@ public class Maze {
         // crée la 1ere ligne ?
         for (int i = 1; i <= horizontalSize; i++) {
             if (i == roll)
-                print(":  ");
+                print(CellType.OPEN.bottom);
             else
-                print(":--");
+                print(CellType.CLOSE_BOTTOM.bottom);
         }
 
         print(":");
@@ -347,32 +347,20 @@ public class Maze {
                         GOTO(GOTO_START);
                     }
             }
-
         }
 
-        for (
-                int j = 1;
-                j <= verticalSize; j++) {
+        for (int j = 1;j <= verticalSize; j++) {
             print("I");
 
             for (int i = 1; i <= horizontalSize; i++) {
-                if (matrix[i][j] == CellType.CLOSE_RIGHT_BOTTOM || matrix[i][j] == CellType.CLOSE_RIGHT) {
-                    print("  I");
-                } else if (matrix[i][j] == CellType.CLOSE_BOTTOM || matrix[i][j] == CellType.OPEN) {
-                    print("   ");
-                }
+                print(matrix[i][j].right);
             }
 
             print(" ");
             println();
 
             for (int i = 1; i <= horizontalSize; i++) {
-                if (matrix[i][j] == CellType.CLOSE_RIGHT_BOTTOM)
-                    print(":--");
-                else if (matrix[i][j] == CellType.CLOSE_BOTTOM)
-                    print(":--");
-                else if (matrix[i][j] == CellType.CLOSE_RIGHT || matrix[i][j] == CellType.OPEN)
-                    print(":  ");
+                print(matrix[i][j].bottom);
             }
 
             print(":");
